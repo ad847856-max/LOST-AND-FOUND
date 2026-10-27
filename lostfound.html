@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusFind | Lost & Found</title>
+    <link rel="stylesheet" href="./lostfound.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="#home" class="logo">🎒 Campus<span>Find</span></a>
+
+        <button class="menu-btn" id="menuBtn">☰</button>
+
+        <nav id="navLinks">
+            <a href="#home">Home</a>
+            <a href="#listings">Listings</a>
+            <a href="#categories">Categories</a>
+            <a href="#how">How it works</a>
+        </nav>
+
+        <button class="report-btn" onclick="openForm('Lost')">
+            + Report Item
+        </button>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-text">
+                <p class="tag">✦ YOUR CAMPUS, YOUR COMMUNITY</p>
+
+                <h1>Lost something?<br>Found <span>something?</span></h1>
+
+                <p class="description">
+                    Find lost belongings or help return found items
+                    to their owners. Together, we make campus life easier.
+                </p>
+
+                <form id="searchForm" class="search-box">
+                    <input type="text" id="searchInput"
+                        placeholder="Search phone, wallet, books...">
+                    <button type="submit">Search</button>
+                </form>
+
+                <div class="popular">
+                    <span>Popular:</span>
+                    <button onclick="quickSearch('phone')">Phone</button>
+                    <button onclick="quickSearch('book')">Books</button>
+                    <button onclick="quickSearch('bag')">Bag</button>
+                    <button onclick="quickSearch('keys')">Keys</button>
+                </div>
+            </div>
+
+            <div class="hero-art">
+                <div class="glow"></div>
+                <div class="floating-item phone">📱</div>
+                <div class="floating-item key">🔑</div>
+                <div class="backpack">🎒</div>
+                <div class="floating-item bottle">🧴</div>
+                <div class="floating-item book">📘</div>
+                <p class="art-note">Find what's yours ↙</p>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-icon pink">⌕</span>
+                    <div><h2 id="lostCount">0</h2><p>Items Lost</p></div>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon green">✓</span>
+                    <div><h2 id="foundCount">0</h2><p>Items Found</p></div>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon purple">✦</span>
+                    <div><h2 id="totalCount">0</h2><p>Total Reports</p></div>
+                </div>
+                <p class="stat-footer">👥 A safer campus starts with us.</p>
+            </div>
+        </section>
+
+        <section class="categories" id="categories">
+            <button class="category blue" onclick="filterCategory('Electronics')">
+                <span>💻</span><div><h3>Electronics</h3><p>Phones, laptops, chargers</p></div>
+            </button>
+            <button class="category purple" onclick="filterCategory('Accessories')">
+                <span>🎒</span><div><h3>Accessories</h3><p>Bags, wallets, watches</p></div>
+            </button>
+            <button class="category green" onclick="filterCategory('Books')">
+                <span>📚</span><div><h3>Books & Study</h3><p>Books, notes, stationery</p></div>
+            </button>
+            <button class="category orange" onclick="filterCategory('Personal')">
+                <span>🪪</span><div><h3>Personal Items</h3><p>ID cards, keys, bottles</p></div>
+            </button>
+            <button class="category pink" onclick="filterCategory('Other')">
+                <span>📦</span><div><h3>Other</h3><p>Everything else</p></div>
+            </button>
+        </section>
+
+        <section class="main-layout" id="listings">
+            <div class="listing-panel">
+                <div class="section-heading">
+                    <div>
+                        <p class="small-title">CAMPUS COMMUNITY</p>
+                        <h2>🔥 Recent Listings</h2>
+                        <p class="muted">Find items reported around your campus.</p>
+                    </div>
+                    <button class="reset-btn" onclick="resetFilters()">Reset filters ↗</button>
+                </div>
+
+                <div class="filters">
+                    <div class="tabs">
+                        <button class="tab active" onclick="setType('All', this)">All Items</button>
+                        <button class="tab" onclick="setType('Lost', this)">Lost Items</button>
+                        <button class="tab" onclick="setType('Found', this)">Found Items</button>
+                    </div>
+
+                    <select id="sortSelect" onchange="renderItems()">
+                        <option value="newest">Newest first</option>
+                        <option value="oldest">Oldest first</option>
+                    </select>
+                </div>
+
+                <p id="filterMessage" class="filter-message"></p>
+
+                <div class="item-grid" id="itemGrid"></div>
+
+                <div class="empty hidden" id="emptyMessage">
+                    <div>🔎</div>
+                    <h3>No items found!</h3>
+                    <p>Try another search or report the item yourself.</p>
+                    <button class="primary-btn" onclick="openForm('Lost')">+ Report Item</button>
+                </div>
+
+                <div class="banner">
+                    <div class="banner-icon">🛡️</div>
+                    <div>
+                        <h3>Found an item?</h3>
+                        <p>Help someone get their belongings back.</p>
+                        <button onclick="openForm('Found')">Report Found Item →</button>
+                    </div>
+                    <div class="banner-note">Small actions,<br>big difference ✨</div>
+                </div>
+            </div>
+
+            <aside class="sidebar">
+                <div class="map">
+                    <span class="map-label">📍 Your Campus</span>
+                    <span class="pin pin1">●</span>
+                    <span class="pin pin2">●</span>
+                    <span class="pin pin3">●</span>
+                    <span class="building">LIBRARY</span>
+                    <span class="building building2">BLOCK B</span>
+                    <span class="building building3">CANTEEN</span>
+                </div>
+
+                <h3>Quick Actions</h3>
+                <button class="quick blue-btn" onclick="openForm('Lost')">＋ Report Lost Item</button>
+                <button class="quick green-btn" onclick="openForm('Found')">⌕ Report Found Item</button>
+                <button class="quick purple-btn" onclick="showMyReports()">♙ My Reports <span id="myCount">0</span></button>
+
+                <div class="help">
+                    <span>?</span>
+                    <div><strong>Need help?</strong><p>Learn how CampusFind works.</p></div>
+                    <a href="#how">›</a>
+                </div>
+            </aside>
+        </section>
+
+        <section class="how" id="how">
+            <p class="small-title">SIMPLE AND SECURE</p>
+            <h2>How CampusFind Works</h2>
+            <p class="muted">Three simple steps to reunite people with their belongings.</p>
+
+            <div class="steps">
+                <article>
+                    <span>01</span><div>📝</div>
+                    <h3>Report an Item</h3>
+                    <p>Tell the campus community what you lost or found.</p>
+                </article>
+                <article>
+                    <span>02</span><div>🔎</div>
+                    <h3>Search Listings</h3>
+                    <p>Search and filter reports to find matching belongings.</p>
+                </article>
+                <article>
+                    <span>03</span><div>🤝</div>
+                    <h3>Return It Safely</h3>
+                    <p>Verify ownership and arrange a safe handover.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <a href="#home" class="logo">🎒 Campus<span>Find</span></a>
+        <p>Made with ♥ for a more helpful campus.</p>
+        <a href="#home">Back to top ↑</a>
+    </footer>
+
+    <!-- Report Item Popup -->
+    <div class="modal hidden" id="reportModal">
+        <div class="modal-content">
+            <div class="modal-heading">
+                <div>
+                    <p class="small-title">CAMPUS COMMUNITY</p>
+                    <h2>Report an Item</h2>
+                    <p class="muted">Fill in the details below.</p>
+                </div>
+                <button class="close-btn" onclick="closeForm()">×</button>
+            </div>
+
+            <form id="reportForm">
+                <div class="form-row">
+                    <label>Report Type
+                        <select id="itemType" required>
+                            <option value="Lost">I lost something</option>
+                            <option value="Found">I found something</option>
+                        </select>
+                    </label>
+                    <label>Category
+                        <select id="itemCategory" required>
+                            <option>Electronics</option>
+                            <option>Accessories</option>
+                            <option>Books</option>
+                            <option>Personal</option>
+                            <option>Other</option>
+                        </select>
+                    </label>
+                </div>
+
+                <label>Item Name
+                    <input id="itemName" required maxlength="60" placeholder="e.g. Black backpack">
+                </label>
+
+                <label>Description
+                    <textarea id="itemDescription" required maxlength="240" rows="3"
+                        placeholder="Describe the item..."></textarea>
+                </label>
+
+                <div class="form-row">
+                    <label>Location
+                        <input id="itemLocation" required placeholder="e.g. College library">
+                    </label>
+                    <label>Date
+                        <input id="itemDate" type="date" required>
+                    </label>
+                </div>
+
+                <label>Contact Details (Optional)
+                    <input id="itemContact" maxlength="80" placeholder="Preferred contact">
+                </label>
+
+                <p class="form-note">Demo version: reports are saved in this browser only.</p>
+
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" onclick="closeForm()">Cancel</button>
+                    <button type="submit" class="primary-btn">Submit Report ↗</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Item Details Popup -->
+    <div class="modal hidden" id="detailsModal">
+        <div class="modal-content">
+            <div class="modal-heading">
+                <h2>Item Details</h2>
+                <button class="close-btn" onclick="closeDetails()">×</button>
+            </div>
+            <div id="detailsContent"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="./lostfound.js"></script>
+</body>
+</html>
